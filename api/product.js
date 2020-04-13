@@ -59,7 +59,7 @@ async function remove(_, { id }) {
 
   if (result.insertedId) {
 
-    result = await db.collection('productss').removeOne({ id });
+    result = await db.collection('products').removeOne({ id });
 
     return result.deletedCount === 1;
 

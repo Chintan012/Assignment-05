@@ -9,4 +9,4 @@ export default function ProductImage({ match }) {
       <img src={id} alt="not found" />
     </div>
   );
-}
+} 

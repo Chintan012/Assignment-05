@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 
 import NumInput from './NumInput.jsx';
 
+import graphQLFetch from './graphQLFetch.js';
+
 import TextInput from './TextInput.jsx';
 
 
@@ -15,7 +17,7 @@ export default class InventoryEdit extends React.Component {
     super();
 
     this.state = {
-        products : []
+        product : []
     };
 
     this.onChange = this.onChange.bind(this);
@@ -57,7 +59,7 @@ export default class InventoryEdit extends React.Component {
 
     this.setState(prevState => ({
 
-      products: { ...prevState.products, [name]: value },
+      product: { ...prevState.product, [name]: value },
 
     }));
 
@@ -67,65 +69,59 @@ export default class InventoryEdit extends React.Component {
 
     e.preventDefault();
 
-    const { products, invalidFields } = this.state;
+    const { product, invalidFields } = this.state;
 
-    const query = `mutation inventoryUpdate(
+    const query = `mutation productUpdate(
 
       $id: Int!
 
-      $changes: InventoryUpdateInputs!
+      $changes: productUpdateInputs!
 
     ) {
 
-      inventoryeUpdate(
+      productUpdate(
 
         id: $id
 
         changes: $changes
 
       ) {
-        product_category product_name product_price product_image
+        id product_category product_name product_price product_image
       }
 
     }`;
 
+    
+    const { id, ...changes } = product;
 
+    const data = await graphQLFetch(query, { changes, id });
 
-    const { id, ...changes } = products;
+    if (data) {
 
-    const data = { id, changes };
+      this.setState({ product: data.productUpdate });
 
-    await fetch(window.ENV.UI_API_ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query, data }),
-      });
-      alert('Product updated Successfully');
-      this.loadData();
+      alert('Updated issue successfully'); // eslint-disable-line no-alert
+
+    }
 
   }
 
+
   async loadData() {
 
-    const query = `query products($id: Int!) {
+    const query = `query product($id: Int!) {
 
-      products(id: $id) {
-        product_category product_name product_price product_image
+      product(id: $id) {
+        id product_category product_name product_price product_image
       }
 
     }`;
 
     const { match: { params: { id } } } = this.props;
 
-    const data = {id};
+    const data = await graphQLFetch(query, { id });
 
-    const response = await fetch(window.ENV.UI_API_ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query, data }),
-      });
-      const result = await response.json();
-      this.setState({ products: result.data.product });
+    this.setState({ product: data ? data.product : {}, invalidFields: {} });
 
   }
 
@@ -133,7 +129,7 @@ export default class InventoryEdit extends React.Component {
 
   render() {
 
-    const { products: { id } } = this.state;
+    const { product: { id } } = this.state;
 
     const { match: { params: { id: propsId } } } = this.props;
 
@@ -149,9 +145,9 @@ export default class InventoryEdit extends React.Component {
 
     }
 
-    const { products: { Category, Price } } = this.state;
+    const { product: { product_category, product_price } } = this.state;
 
-    const { issue: { Name, Image } } = this.state;
+    const { product: { product_name, product_image } } = this.state;
 
     return (
         <form onSubmit={this.handleSubmit}>
@@ -161,7 +157,7 @@ export default class InventoryEdit extends React.Component {
               <tr>
                 <td>Category:</td>
                 <td>
-                  <select name="Category" value={Category} onChange={this.onChange}>
+                  <select name="Category" value={product_category} onChange={this.onChange}>
                     <option value="shirt">Shirt</option>
                     <option value="jeans">Jeans</option>
                     <option value="jacket">Sweater</option>
@@ -173,19 +169,19 @@ export default class InventoryEdit extends React.Component {
               <tr>
                 <td>Price:</td>
                 <td>
-                  <NumInput name="Price" value={Price} onChange={this.onChange} key={id} />
+                  <NumInput name="product_price" value={product_price} onChange={this.onChange} key={id} />
                 </td>
               </tr>
               <tr>
                 <td>Name:</td>
                 <td>
-                  <TextInput name="Name" value={Name} onChange={this.onChange} key={id} />
+                  <TextInput name="product_name" value={product_name} onChange={this.onChange} key={id} />
                 </td>
               </tr>
               <tr>
                 <td>Image:</td>
                 <td>
-                  <TextInput name="Image" value={Image} onChange={this.onChange} key={id} />
+                  <TextInput name="product_image" value={product_image} onChange={this.onChange} key={id} />
                 </td>
               </tr>
               <tr>

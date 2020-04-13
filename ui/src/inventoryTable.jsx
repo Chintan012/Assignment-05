@@ -1,23 +1,23 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 
-const ProductRow = withRouter(({ product, deleteProduct, index }) => (
+const ProductRow = withRouter(({ myProducts, deleteProduct, index }) => (
   <tr>
-    <td>{product.product_name}</td>
+    <td>{myProducts.product_name}</td>
     <td>
       $
-      {product.product_price}
+      {myProducts.product_price}
     </td>
-    <td>{product.Category}</td>
-    <td><Link to={`/img/${product.product_image}`}>View</Link></td>
-    <td><Link to={`/edit/${product.id}`}>Edit</Link></td>
-    <td><button type="button" onClick={() => { deleteProduct(index); }}>Delete</button></td>
+    <td>{myProducts.product_category}</td>
+    <td><Link to={`/${myProducts.product_image}`}>View</Link></td>
+    <td><Link to={`/edit/${myProducts.id}`}>Edit</Link></td>
+    <td><button type="button" onClick={() => {console.log(index); deleteProduct(index); }}>Delete</button></td>
   </tr>
 ));
 
 export default function ProductTable({myProducts, deleteProduct}) {
-    const productRows = myProducts.map((product) =>
-        <ProductRow key={product.id} product={myProducts} deleteProduct={deleteProduct} index={product.id} />
+    const productRows = myProducts.map((myProducts) =>
+        <ProductRow key={myProducts.id} myProducts={myProducts} deleteProduct={deleteProduct} index={myProducts.id} />
     );
   
     return (

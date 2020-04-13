@@ -15,15 +15,15 @@ type Product {
   product_image: String
 }
 
-input InventoryInputs {
+input productInputs {
   product_category: Category
   product_name: String
   product_price: Float
   product_image: String
 }
 
-input InventoryUpdateInputs{
-   product_category: Category
+input productUpdateInputs{
+  product_category: Category
   product_name: String
   product_price: Float
   product_image: String
@@ -35,7 +35,7 @@ type Query {
 }
 
 type Mutation {
-  productAdd(product:InventoryInputs!):Product!
-  productUpdate(id: Int!, changes: InventoryUpdateInputs!): Product! 
+  productAdd(product:productInputs!):Product!
+  productUpdate(id: Int!, changes: productUpdateInputs!): Product! 
   productDelete(id: Int!): Boolean!
 }
