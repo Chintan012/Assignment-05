@@ -69,7 +69,7 @@ export default class InventoryEdit extends React.Component {
 
     e.preventDefault();
 
-    const { product, invalidFields } = this.state;
+    const { product } = this.state;
 
     const query = `mutation productUpdate(
 
@@ -100,7 +100,7 @@ export default class InventoryEdit extends React.Component {
 
       this.setState({ product: data.productUpdate });
 
-      alert('Updated issue successfully'); // eslint-disable-line no-alert
+      alert('Updated product successfully'); // eslint-disable-line no-alert
 
     }
 
@@ -145,9 +145,8 @@ export default class InventoryEdit extends React.Component {
 
     }
 
-    const { product: { product_category, product_price } } = this.state;
+    const { product: {  product_category, product_name, product_price, product_image } } = this.state;
 
-    const { product: { product_name, product_image } } = this.state;
 
     return (
         <form onSubmit={this.handleSubmit}>
@@ -157,12 +156,12 @@ export default class InventoryEdit extends React.Component {
               <tr>
                 <td>Category:</td>
                 <td>
-                  <select name="Category" value={product_category} onChange={this.onChange}>
-                    <option value="shirt">Shirt</option>
-                    <option value="jeans">Jeans</option>
-                    <option value="jacket">Sweater</option>
-                    <option value="sweater">Jacket</option>
-                    <option value="accessories">Accessories</option>
+                  <select name="product_category" value={product_category} onChange={this.onChange}  >
+                    <option value="Shirt">Shirt</option>
+                    <option value="Jeans">Jeans</option>
+                    <option value="Jackets">Jacket</option>
+                    <option value="Sweaters">Sweaters</option>
+                    <option value="Accessories">Accessories</option>
                   </select>
                 </td>
               </tr>

@@ -46,10 +46,11 @@ export default class ProductList extends React.Component {
       _id
     }
   }`;
+    const variables = {myProduct}
     await fetch(window.ENV.UI_API_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ query, variables: { myProduct } })
+      body: JSON.stringify({ query, variables })
     }).then(response => {
       this.loadData()
     }).catch(err => {
@@ -57,59 +58,19 @@ export default class ProductList extends React.Component {
     });
   }
 
-  // async deleteProduct(id) {
-  //     const query = `mutation productDelete($id: Int!) {
-  //       productDelete(id: $id)
-  //     }`;
-  //     await fetch(window.ENV.UI_API_ENDPOINT, {
-  //       method: 'POST',
-  //       headers: { 'Content-Type': 'application/json' },
-  //       body: JSON.stringify({ query,  id  }),
-  //     });
-  //     alert('Product deleted product successfully!');
-  //     this.loadData();
-  // }
-
-
-  async deleteProduct(index) {
-
-    const query = `mutation productDelete($id: Int!) {
-
-      productDelete(id: $id)
-
-    }`;
-
-    const { myProducts } = this.state;
-
-    const { location: { pathname, search }, history } = this.props;
-
-    const { id } = myProducts[index--];
-
-    const data = await graphQLFetch(query, { id });
-
-    if (data && data.productDelete) {
-
-      this.setState((prevState) => {
-
-        const newList = [...prevState.myProducts];
-
-        if (pathname === `/myProducts/${id}`) {
-
-          history.push({ pathname: '/myProducts', search });
-
-        }
-
-        newList.splice(index, 1);
-
-        return { myProducts: newList };
-
+  async deleteProduct(id) {
+      const query = `mutation productDelete($id: Int!) {
+        productDelete(id: $id)
+      }`;
+      console.log(id);
+    const variables =  { id };
+      await fetch(window.ENV.UI_API_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query,  variables  }),
       });
-
-    } else {
-
+      alert('Product deleted product successfully!');
       this.loadData();
-
-    }
   }
 
     render() {

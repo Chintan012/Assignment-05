@@ -9,22 +9,22 @@ enum Category {
 type Product {
   _id : ID
   id: Int!
-  product_category: Category
-  product_name: String
+  product_category: Category!
+  product_name: String!
   product_price: Float
   product_image: String
 }
 
 input productInputs {
-  product_category: Category
-  product_name: String
+  product_category: Category!
+  product_name: String!
   product_price: Float
   product_image: String
 }
 
 input productUpdateInputs{
-  product_category: Category
-  product_name: String
+  product_category: Category!
+  product_name: String!
   product_price: Float
   product_image: String
 }
