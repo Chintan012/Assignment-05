@@ -9,7 +9,7 @@ const ProductRow = withRouter(({ myProducts, deleteProduct, index }) => (
       {myProducts.product_price}
     </td>
     <td>{myProducts.product_category}</td>
-    <td><Link to={`/${myProducts.product_image}`}>View</Link></td>
+    <td><Link to={`/img/${myProducts.id}`}>View</Link></td>
     <td><Link to={`/edit/${myProducts.id}`}>Edit</Link></td>
     <td><button type="button" onClick={() => {console.log(index); deleteProduct(index); }}>Delete</button></td>
   </tr>

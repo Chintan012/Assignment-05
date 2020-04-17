@@ -22,6 +22,8 @@ export default function Contents() {
   return (
 
     <Switch>
+       <Redirect exact from="/" to="/home" />
+
       <Route path="/home" component={ProductList} />
 
       <Route path="/myProducts" component={ProductList} />
